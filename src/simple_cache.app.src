@@ -1,0 +1,8 @@
+{application, simple_cache, [
+    {description, "A simple caching system."},
+    {vsn, "0.1.0"},
+    {modules, [simple_cache_app, simple_cache_sup]},
+    {registered, [simple_cache_sup]},
+    {applications, [kernel, stdlib]},
+    {mod, {simple_cache_app, []}}
+]}.

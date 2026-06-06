@@ -1,5 +1,6 @@
 .eunit
 *.o
+*.app
 *.beam
 *.plt
 erl_crash.dump
