@@ -10,10 +10,10 @@
 start_link() ->
     supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
-start_child(Value, Timeout) ->
+start_child(Value, LeaseTime) ->
     ChildSpec = #{
         id => make_ref(),
-        start => {simple_cache_element, start_link, [Value, Timeout]},
+        start => {simple_cache_element, start_link, [Value, LeaseTime]},
         restart => temporary,
         shutdown => brutal_kill,
         type => worker,
