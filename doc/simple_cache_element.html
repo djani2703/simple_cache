@@ -30,7 +30,7 @@ when its lease time expires.</p>
 
 
 <h3 class="typedecl"><a name="type-lease_time">lease_time()</a></h3>
-<p><code>lease_time() = non_neg_integer()</code></p>
+<p><code>lease_time() = non_neg_integer() | infinity</code></p>
 
 
 <h3 class="typedecl"><a name="type-state">state()</a></h3>
@@ -64,13 +64,13 @@ when its lease time expires.</p>
 
 <h3 class="function"><a name="create-1">create/1</a></h3>
 <div class="spec">
-<p><code>create(Value::term()) -&gt; {ok, pid()} | {ok, pid(), term()} | ignore | {error, term()}</code><br></p>
+<p><code>create(Value::term()) -&gt; {ok, pid()} | {error, term()}</code><br></p>
 <p> </p>
 </div><p>Create the simple cache worker process by default lease time.</p>
 
 <h3 class="function"><a name="create-2">create/2</a></h3>
 <div class="spec">
-<p><code>create(Value::term(), LeaseTime::<a href="#type-lease_time" docgen-rel="seetype" docgen-href="#lease_time/0">lease_time()</a>) -&gt; {ok, pid()} | {ok, pid(), term()} | ignore | {error, term()}</code><br></p>
+<p><code>create(Value::term(), LeaseTime::<a href="#type-lease_time" docgen-rel="seetype" docgen-href="#lease_time/0">lease_time()</a>) -&gt; {ok, pid()} | {error, term()}</code><br></p>
 <p> </p>
 </div><p>
    Creates a cache worker process that stores Value
@@ -90,7 +90,7 @@ when its lease time expires.</p>
 
 <h3 class="function"><a name="handle_call-3">handle_call/3</a></h3>
 <div class="spec">
-<p><code>handle_call(X1::term(), From::<a href="/Users/yevhen/Study/Apps/stdlib/doc/gen_server.html#type-from" docgen-rel="seetype" docgen-href="stdlib:gen_server#from/0">gen_server:from()</a>, State::<a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>) -&gt; {reply, term(), <a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>, timeout()}</code><br></p>
+<p><code>handle_call(X1::term(), From::<a href="/Users/yevhen/Study/Apps/stdlib/doc/gen_server.html#type-from" docgen-rel="seetype" docgen-href="stdlib:gen_server#from/0">gen_server:from()</a>, State::<a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>) -&gt; {reply, {ok, term()}, <a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>, timeout()}</code><br></p>
 <p> </p>
 </div>
 
@@ -120,7 +120,7 @@ when its lease time expires.</p>
 
 <h3 class="function"><a name="start_link-2">start_link/2</a></h3>
 <div class="spec">
-<p><code>start_link(Value::term(), LeaseTime::<a href="#type-lease_time" docgen-rel="seetype" docgen-href="#lease_time/0">lease_time()</a>) -&gt; {ok, pid()} | ignore | {error, term()}</code><br></p>
+<p><code>start_link(Value::term(), LeaseTime::<a href="#type-lease_time" docgen-rel="seetype" docgen-href="#lease_time/0">lease_time()</a>) -&gt; {ok, pid()} | {error, term()}</code><br></p>
 <p> </p>
 </div><p>Starts the simple cache worker process.</p>
 

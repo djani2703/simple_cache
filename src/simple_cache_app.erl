@@ -18,6 +18,7 @@
 -spec start(application:start_type(), term()) ->
     {ok, pid()} | {error, term()}.
 start(_StartType, _StartArgs) ->
+    ok = simple_cache_store:init(),
     simple_cache_sup:start_link().
 
 -spec stop(term()) -> ok.

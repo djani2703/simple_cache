@@ -21,7 +21,7 @@
 
 -record(state, {value, lease_time, start_time}).
 
--type lease_time() :: non_neg_integer().
+-type lease_time() :: non_neg_integer() | infinity.
 
 -type init_args() :: {term(), lease_time()}.
 
@@ -35,22 +35,19 @@
 %%% API
 %%%===================================================================
 %%% @doc Create the simple cache worker process by default lease time.
--spec create(term()) ->
-    {ok, pid()} | {ok, pid(), term()} | ignore | {error, term()}.
+-spec create(term()) -> {ok, pid()} | {error, term()}.
 create(Value) ->
     create(Value, ?DEFAULT_LEASE_TIME).
 
 %%% @doc
 %%% Creates a cache worker process that stores Value
 %%% for LeaseTime seconds.
--spec create(term(), lease_time()) ->
-    {ok, pid()} | {ok, pid(), term()} | ignore | {error, term()}.
+-spec create(term(), lease_time()) -> {ok, pid()} | {error, term()}.
 create(Value, LeaseTime) ->
     simple_cache_sup:start_child(Value, LeaseTime).
 
 %%% @doc Starts the simple cache worker process.
--spec start_link(term(), lease_time()) ->
-    {ok, pid()} | ignore | {error, term()}.
+-spec start_link(term(), lease_time()) -> {ok, pid()} | {error, term()}.
 start_link(Value, LeaseTime) ->
     gen_server:start_link(?MODULE, {Value, LeaseTime}, []).
 
@@ -83,7 +80,7 @@ init({Value, LeaseTime}) ->
     {ok, State, RemainingTime}.
 
 -spec handle_call(term(), gen_server:from(), state()) ->
-    {reply, term(), state(), timeout()}.
+    {reply, {ok, term()}, state(), timeout()}.
 handle_call(fetch, _From, #state{value = Value} = State) ->
     RemainingTime = remaining_time(State),
     {reply, {ok, Value}, State, RemainingTime}.
@@ -102,8 +99,7 @@ handle_info(timeout, State) ->
 
 -spec terminate(term(), state()) -> ok.
 terminate(_Reason, _State) ->
-    % Need to implement simple_cache_store module and then uncomment it:
-    % simple_cache_store:remove(self()),
+    simple_cache_store:delete(self()),
     ok.
 -spec code_change(term(), state(), term()) -> {ok, state()}.
 code_change(_OldVsn, State, _Extra) ->
@@ -112,7 +108,7 @@ code_change(_OldVsn, State, _Extra) ->
 %%%===================================================================
 %%% Internal functions
 %%%===================================================================
--spec remaining_time(state()) -> infinity | timeout().
+-spec remaining_time(state()) -> timeout().
 remaining_time(#state{lease_time = infinity}) ->
     infinity;
 remaining_time(#state{start_time = StartTime, lease_time = LeaseTime}) ->
