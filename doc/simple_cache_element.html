@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Module simple_cache_element</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module simple_cache_element</h1>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>   
+Cache worker process.
+
+<p><b>Behaviours:</b> <a href="gen_server.html"><code>gen_server</code></a>.</p>
+
+<h2><a name="description">Description</a></h2><p>   
+Cache worker process.</p>
+  
+   <p>Stores a single value and automatically terminates   
+when its lease time expires.</p>
+  
+   Each cache entry is represented by a dedicated gen_server process.
+  -------------------------------------------------------------------
+<h2><a name="types">Data Types</a></h2>
+
+<h3 class="typedecl"><a name="type-init_args">init_args()</a></h3>
+<p><code>init_args() = {term(), <a href="#type-lease_time" docgen-rel="seetype" docgen-href="#lease_time/0">lease_time()</a>}</code></p>
+
+
+<h3 class="typedecl"><a name="type-lease_time">lease_time()</a></h3>
+<p><code>lease_time() = non_neg_integer()</code></p>
+
+
+<h3 class="typedecl"><a name="type-state">state()</a></h3>
+<p><code>state() = #state{value = term(), lease_time = <a href="#type-lease_time" docgen-rel="seetype" docgen-href="#lease_time/0">lease_time()</a>, start_time = integer()}</code></p>
+
+
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#code_change-3">code_change/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#create-1">create/1</a></td><td>Create the simple cache worker process by default lease time.</td></tr>
+<tr><td valign="top"><a href="#create-2">create/2</a></td><td>
+   Creates a cache worker process that stores Value
+   for LeaseTime seconds.</td></tr>
+<tr><td valign="top"><a href="#delete-1">delete/1</a></td><td>Terminates the simple cache process.</td></tr>
+<tr><td valign="top"><a href="#fetch-1">fetch/1</a></td><td>Returns the simple cache value.</td></tr>
+<tr><td valign="top"><a href="#handle_call-3">handle_call/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#handle_cast-2">handle_cast/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#handle_info-2">handle_info/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#init-1">init/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#replace-2">replace/2</a></td><td>Replaces the cached value.</td></tr>
+<tr><td valign="top"><a href="#start_link-2">start_link/2</a></td><td>Starts the simple cache worker process.</td></tr>
+<tr><td valign="top"><a href="#terminate-2">terminate/2</a></td><td></td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="code_change-3">code_change/3</a></h3>
+<div class="spec">
+<p><code>code_change(OldVsn::term(), State::<a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>, Extra::term()) -&gt; {ok, <a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>}</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="create-1">create/1</a></h3>
+<div class="spec">
+<p><code>create(Value::term()) -&gt; {ok, pid()} | {ok, pid(), term()} | ignore | {error, term()}</code><br></p>
+<p> </p>
+</div><p>Create the simple cache worker process by default lease time.</p>
+
+<h3 class="function"><a name="create-2">create/2</a></h3>
+<div class="spec">
+<p><code>create(Value::term(), LeaseTime::<a href="#type-lease_time" docgen-rel="seetype" docgen-href="#lease_time/0">lease_time()</a>) -&gt; {ok, pid()} | {ok, pid(), term()} | ignore | {error, term()}</code><br></p>
+<p> </p>
+</div><p>
+   Creates a cache worker process that stores Value
+   for LeaseTime seconds.</p>
+
+<h3 class="function"><a name="delete-1">delete/1</a></h3>
+<div class="spec">
+<p><code>delete(Pid::pid()) -&gt; ok</code><br></p>
+<p> </p>
+</div><p>Terminates the simple cache process.</p>
+
+<h3 class="function"><a name="fetch-1">fetch/1</a></h3>
+<div class="spec">
+<p><code>fetch(Pid::pid()) -&gt; {ok, term()}</code><br></p>
+<p> </p>
+</div><p>Returns the simple cache value.</p>
+
+<h3 class="function"><a name="handle_call-3">handle_call/3</a></h3>
+<div class="spec">
+<p><code>handle_call(X1::term(), From::<a href="/Users/yevhen/Study/Apps/stdlib/doc/gen_server.html#type-from" docgen-rel="seetype" docgen-href="stdlib:gen_server#from/0">gen_server:from()</a>, State::<a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>) -&gt; {reply, term(), <a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>, timeout()}</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="handle_cast-2">handle_cast/2</a></h3>
+<div class="spec">
+<p><code>handle_cast(X1::{replace, term()} | delete, State::<a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>) -&gt; {noreply, <a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>, timeout()} | {stop, normal, <a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>}</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="handle_info-2">handle_info/2</a></h3>
+<div class="spec">
+<p><code>handle_info(X1::term(), State::<a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>) -&gt; {stop, normal, <a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>}</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="init-1">init/1</a></h3>
+<div class="spec">
+<p><code>init(X1::<a href="#type-init_args" docgen-rel="seetype" docgen-href="#init_args/0">init_args()</a>) -&gt; {ok, <a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>, timeout()}</code><br></p>
+<p> </p>
+</div>
+
+<h3 class="function"><a name="replace-2">replace/2</a></h3>
+<div class="spec">
+<p><code>replace(Pid::pid(), Value::term()) -&gt; ok</code><br></p>
+<p> </p>
+</div><p>Replaces the cached value.</p>
+
+<h3 class="function"><a name="start_link-2">start_link/2</a></h3>
+<div class="spec">
+<p><code>start_link(Value::term(), LeaseTime::<a href="#type-lease_time" docgen-rel="seetype" docgen-href="#lease_time/0">lease_time()</a>) -&gt; {ok, pid()} | ignore | {error, term()}</code><br></p>
+<p> </p>
+</div><p>Starts the simple cache worker process.</p>
+
+<h3 class="function"><a name="terminate-2">terminate/2</a></h3>
+<div class="spec">
+<p><code>terminate(Reason::term(), State::<a href="#type-state" docgen-rel="seetype" docgen-href="#state/0">state()</a>) -&gt; ok</code><br></p>
+<p> </p>
+</div>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc</i></p>
+</body>
+</html>

@@ -21,6 +21,9 @@ app:
 clean:
 	rm -rf $(EBIN)
 
+docs:
+	erl -noshell -eval "edoc:application(simple_cache, \".\", [{dir, \"doc\"}]), halt()."
+
 shell:
 	erl -pa $(EBIN)
 
