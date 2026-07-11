@@ -1,8 +1,9 @@
 APP=simple_cache
 
-SRC=src
+CONFIG=config/sys
 EBIN=ebin
 INCLUDE=include
+SRC=src
 
 ERLC=erlc
 ERL_FLAGS=-I $(INCLUDE) -o $(EBIN) +debug_info -Wall
@@ -25,6 +26,6 @@ docs:
 	erl -noshell -eval "edoc:application(simple_cache, \".\", [{dir, \"doc\"}]), halt()."
 
 shell:
-	erl -pa $(EBIN)
+	erl -pa $(EBIN) -config $(CONFIG)
 
 run: all shell
