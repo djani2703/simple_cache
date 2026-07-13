@@ -10,6 +10,8 @@
 %%%-------------------------------------------------------------------
 -module(simple_cache).
 
+-include_lib("kernel/include/logger.hrl").
+
 -export([insert/2, lookup/1, delete/1]).
 
 %%%===================================================================
@@ -21,11 +23,16 @@
 insert(Key, Value) ->
     case simple_cache_store:lookup(Key) of
         {ok, Pid} ->
+            ?LOG_INFO("Replacing cached value for key ~p (pid=~p)", [Key, Pid]),
             simple_cache_element:replace(Pid, Value);
         {error, not_found} ->
             case simple_cache_element:create(Value) of
-                {ok, Pid} -> simple_cache_store:insert(Key, Pid);
-                Error -> Error
+                {ok, Pid} ->
+                    ?LOG_INFO("Cache entry created for key ~p (pid=~p)", [Key, Pid]),
+                    simple_cache_store:insert(Key, Pid);
+                Error ->
+                    ?LOG_ERROR("Failed to create cache entry for key ~p: ~p", [Key, Error]),
+                    Error
             end
     end.
 
@@ -33,14 +40,22 @@ insert(Key, Value) ->
 -spec lookup(term()) -> {ok, term()} | {error, not_found}.
 lookup(Key) ->
     case simple_cache_store:lookup(Key) of
-        {ok, Pid} -> simple_cache_element:fetch(Pid);
-        Error -> Error
+        {ok, Pid} ->
+            ?LOG_DEBUG("Cache lookup succeeded for key ~p (pid=~p)", [Key, Pid]),
+            simple_cache_element:fetch(Pid);
+        Error ->
+            ?LOG_DEBUG("Cache miss for key ~p", [Key]),
+            Error
     end.
 
 %%% @doc Deletes a cache entry by Key.
 -spec delete(term()) -> ok.
 delete(Key) ->
     case simple_cache_store:lookup(Key) of
-        {ok, Pid} -> simple_cache_element:delete(Pid);
-        _Error -> ok
+        {ok, Pid} ->
+            ?LOG_INFO("Deleting cache entry for key ~p (pid=~p)", [Key, Pid]),
+            simple_cache_element:delete(Pid);
+        _Error ->
+            ?LOG_DEBUG("Delete ignored: key ~p does not exist", [Key]),
+            ok
     end.

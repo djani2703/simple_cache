@@ -3,6 +3,7 @@ APP=simple_cache
 CONFIG=config/sys
 EBIN=ebin
 INCLUDE=include
+LOG=log
 SRC=src
 
 ERLC=erlc
@@ -20,7 +21,7 @@ app:
 	cp $(SRC)/$(APP).app.src $(EBIN)/$(APP).app
 
 clean:
-	rm -rf $(EBIN)
+	rm -rf $(EBIN) $(LOG)
 
 docs:
 	erl -noshell -eval "edoc:application(simple_cache, \".\", [{dir, \"doc\"}]), halt()."
