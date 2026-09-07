@@ -1,4 +1,4 @@
-%%%-------------------------------------------------------------------
+%%--------------------------------------------------------------------
 %% @doc
 %% Simple Cache Supervisor.
 %%
@@ -8,20 +8,43 @@
 %% The supervisor uses a one_for_one strategy and allows dynamic creation
 %% of cache workers via start_child/2.
 %% @end
-%%%-------------------------------------------------------------------
+%%--------------------------------------------------------------------
 
 -module(simple_cache_sup).
 
 -behaviour(supervisor).
 
--export([start_link/0]).
+%% API
+-export([start_link/0, start_child/2]).
+%% Supervisor callbacks
 -export([init/1]).
 
 -define(SERVER, ?MODULE).
 
+%%====================================================================
+%% API
+%%====================================================================
+
+%% @doc Starts the simple cache supervisor.
 -spec start_link() -> {ok, pid()} | {error, term()}.
 start_link() ->
     supervisor:start_link({local, ?SERVER}, ?MODULE, []).
+
+%% @doc Starts a new cache worker with the given value and lease time.
+-spec start_child(term(), non_neg_integer()) -> supervisor:startchild_ret().
+start_child(Value, LeaseTime) ->
+    ChildSpec =
+        #{id => make_ref(),
+          start => {simple_cache_element, start_link, [Value, LeaseTime]},
+          restart => temporary,
+          shutdown => brutal_kill,
+          type => worker,
+          modules => [simple_cache_element]},
+    supervisor:start_child(?SERVER, ChildSpec).
+
+%%====================================================================
+%% Supervisor callbacks
+%%====================================================================
 
 -spec init(term()) -> {ok, {supervisor:sup_flags(), [supervisor:child_spec()]}}.
 init(_Args) ->

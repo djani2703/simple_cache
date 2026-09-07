@@ -1,4 +1,4 @@
-%%%-------------------------------------------------------------------
+%%--------------------------------------------------------------------
 %% @doc
 %% Simple Cache OTP application.
 %%
@@ -9,7 +9,7 @@
 %% The application itself does not manage state directly; it only starts
 %% the top-level supervisor.
 %% @end
-%%%-------------------------------------------------------------------
+%%--------------------------------------------------------------------
 
 -module(simple_cache_app).
 
@@ -17,10 +17,12 @@
 
 -export([start/2, stop/1]).
 
+%% @doc Starts the simple cache supervision tree.
 -spec start(application:start_type(), term()) -> {ok, pid()} | {error, term()}.
 start(_StartType, _StartArgs) ->
     simple_cache_sup:start_link().
 
+%% @doc Stops the simple cache application.
 -spec stop(term()) -> ok.
 stop(_State) ->
     ok.
