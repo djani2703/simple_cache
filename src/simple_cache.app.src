@@ -1,0 +1,8 @@
+{application,
+ simple_cache,
+ [{description, "A simple caching system built with Erlang/OTP."},
+  {vsn, "0.1.0"},
+  {registered, [simple_cache_sup]},
+  {mod, {simple_cache_app, []}},
+  {applications, [kernel, stdlib]},
+  {modules, [simple_cache_app, simple_cache_sup]}]}.
