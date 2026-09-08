@@ -24,7 +24,7 @@
 %% @doc Starts the simple cache supervision tree.
 -spec start(application:start_type(), term()) -> {ok, pid()} | {error, term()}.
 start(_StartType, _StartArgs) ->
-    ok = prepare_application(),
+    ok = init_application(),
     simple_cache_sup:start_link().
 
 %% @doc Stops the simple cache application.
@@ -36,6 +36,8 @@ stop(_State) ->
 %% Internal functions
 %%====================================================================
 
-prepare_application() ->
+-spec init_application() -> ok.
+init_application() ->
+    ok = simple_cache_logger:configure(),
     ok = simple_cache_store:init(),
     ok.

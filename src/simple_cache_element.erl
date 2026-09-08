@@ -13,6 +13,8 @@
 
 -behaviour(gen_server).
 
+-include_lib("kernel/include/logger.hrl").
+
 %% API
 -export([start_link/2, create/1, create/2, fetch/1, replace/2, delete/1]).
 %% Gen Server callbacks
@@ -90,11 +92,11 @@ handle_cast(delete, State) ->
 
 -spec handle_info(term(), state()) -> {stop, normal, state()}.
 handle_info(timeout, State) ->
+    ?LOG_INFO("Cache entry process ~p expired", [self()]),
     {stop, normal, State}.
 
 -spec terminate(term(), state()) -> ok.
 terminate(_Reason, _State) ->
-    simple_cache_store:delete(self()),
     ok.
 
 -spec code_change(term(), state(), term()) -> {ok, state()}.
