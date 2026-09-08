@@ -5,4 +5,5 @@
   {registered, [simple_cache_sup]},
   {mod, {simple_cache_app, []}},
   {applications, [kernel, stdlib]},
-  {modules, [simple_cache_app, simple_cache_element, simple_cache_sup]}]}.
+  {modules,
+   [simple_cache_app, simple_cache_element, simple_cache_store, simple_cache_sup]}]}.

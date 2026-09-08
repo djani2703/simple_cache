@@ -94,6 +94,7 @@ handle_info(timeout, State) ->
 
 -spec terminate(term(), state()) -> ok.
 terminate(_Reason, _State) ->
+    simple_cache_store:delete(self()),
     ok.
 
 -spec code_change(term(), state(), term()) -> {ok, state()}.
