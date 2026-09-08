@@ -1,4 +1,4 @@
-%%--------------------------------------------------------------------
+%%%-------------------------------------------------------------------
 %% @doc
 %% Configures Erlang Logger for the simple_cache application.
 %%
@@ -12,7 +12,7 @@
 %% If logging is disabled or the configuration is missing, the primary
 %% log level is set to none, effectively disabling log output.
 %% @end
-%%--------------------------------------------------------------------
+%%%-------------------------------------------------------------------
 
 -module(simple_cache_logger).
 
