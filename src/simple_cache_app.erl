@@ -37,5 +37,6 @@ stop(_State) ->
 %%====================================================================
 
 prepare_application() ->
+    ok = simple_cache_logger:configure(),
     ok = simple_cache_store:init(),
     ok.
