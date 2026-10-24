@@ -7,10 +7,10 @@
 %% ============================================================
 
 setup() ->
-    application:ensure_started(simple_cache).
+    simple_cache_test_helper:start_cache().
 
-cleanup(_SetupResult) ->
-    application:stop(simple_cache).
+cleanup(SetupResult) ->
+    simple_cache_test_helper:stop_cache(SetupResult).
 
 %% ============================================================
 %% Tests

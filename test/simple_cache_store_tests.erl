@@ -7,17 +7,18 @@
 %% ============================================================
 
 setup() ->
-    application:ensure_started(simple_cache).
+    simple_cache_test_helper:start_storage().
 
-cleanup(_SetupResult) ->
-    application:stop(simple_cache).
+cleanup(StartedApps) ->
+    simple_cache_test_helper:stop_started_apps(StartedApps).
 
 %% ============================================================
 %% Tests
 %% ============================================================
 
 initialize_simple_cache_store() ->
-    ?assertNotEqual(undefined, ets:info(simple_cache_store)).
+    ?assertEqual(ok, simple_cache_store:initialize()),
+    ?assert(lists:member(key_to_pid, mnesia:system_info(tables))).
 
 insert_and_lookup_cache_element() ->
     Key = "test_key",

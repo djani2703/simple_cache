@@ -6,7 +6,7 @@
 %% cached values.
 %%
 %% The cache consists of:
-%% - simple_cache_store - key to process PID registry via ETS
+%% - simple_cache_store - Mnesia registry mapping keys to process PIDs
 %% - simple_cache_element - process-based value storage with lease time
 %%
 %% This module contains no state and orchestrates calls between
@@ -27,12 +27,13 @@
 %%====================================================================
 
 %% @doc Inserts or updates a value in the cache using the default lease time.
--spec insert(term(), term()) -> ok | {error, term()}.
+-spec insert(term(), term()) -> ok | {aborted, term()} | {error, term()}.
 insert(Key, Value) ->
     insert(Key, Value, ?DEFAULT_LEASE_TIME).
 
 %% @doc Inserts or updates a value in the cache using the specified lease time in seconds.
--spec insert(term(), term(), non_neg_integer()) -> ok | {error, term()}.
+-spec insert(term(), term(), non_neg_integer()) ->
+                ok | {aborted, term()} | {error, term()}.
 insert(Key, Value, LeaseTime) ->
     case simple_cache_store:lookup(Key) of
         {ok, Pid} ->

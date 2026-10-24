@@ -7,10 +7,16 @@
 %% ============================================================
 
 setup() ->
-    application:ensure_started(simple_cache).
+    {application:get_env(simple_cache, logger), maps:get(level, logger:get_primary_config())}.
 
-cleanup(_SetupResult) ->
-    application:stop(simple_cache).
+cleanup({PreviousConfig, PreviousLevel}) ->
+    restore_logger_config(PreviousConfig),
+    ok = simple_cache_logger:set_primary_level(PreviousLevel).
+
+restore_logger_config({ok, Config}) ->
+    ok = application:set_env(simple_cache, logger, Config);
+restore_logger_config(undefined) ->
+    ok = application:unset_env(simple_cache, logger).
 
 %% ============================================================
 %% Tests

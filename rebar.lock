@@ -1,1 +1,4 @@
-[].
+[{<<"resource_discovery">>,
+  {git,"https://github.com/djani2703/resource_discovery.git",
+       {ref,"96268b45a78bbd0379c42cc97d39068b659d0aa9"}},
+  0}].

@@ -7,10 +7,10 @@
 %% ============================================================
 
 setup() ->
-    application:ensure_started(simple_cache).
+    simple_cache_test_helper:start_supervisor().
 
-cleanup(_SetupResult) ->
-    application:stop(simple_cache).
+cleanup(Supervisor) ->
+    ok = simple_cache_test_helper:stop_supervisor(Supervisor).
 
 %% ============================================================
 %% Tests
@@ -50,9 +50,15 @@ replace_simple_cache_element_value() ->
 delete_simple_cache_element() ->
     {ok, Pid} = simple_cache_element:create("test_value"),
     ?assert(is_process_alive(Pid)),
+    Monitor = monitor(process, Pid),
 
     simple_cache_element:delete(Pid),
-    ?assertNot(is_process_alive(Pid)).
+    receive
+        {'DOWN', Monitor, process, Pid, normal} ->
+            ok
+    after 1000 ->
+        ?assert(false)
+    end.
 
 %% ============================================================
 %% Test fixture
