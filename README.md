@@ -54,6 +54,8 @@ Example:
     {simple_cache,
         [
             {default_lease_time, 86400},
+            {contract_nodes, []},
+            {cluster_connection_wait_time, 6000},
             {logger,
                 #{
                     enabled => true,
@@ -65,6 +67,9 @@ Example:
 ```
 
 `default_lease_time` specifies the default lifetime of a cache entry in seconds.
+`contract_nodes` lists the Erlang nodes to connect to; an empty list runs the
+cache standalone. `cluster_connection_wait_time` sets how long startup waits
+for the configured cluster nodes, in milliseconds.
 
 ## Build
 
@@ -81,6 +86,9 @@ Run the test suite with:
 ```bash
 rebar3 eunit
 ```
+
+The test suite starts `resource_discovery` before `simple_cache`; the
+`resource_discovery` project must be checked out alongside this repository.
 
 ## Format
 

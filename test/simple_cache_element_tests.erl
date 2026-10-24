@@ -7,10 +7,10 @@
 %% ============================================================
 
 setup() ->
-    application:ensure_started(simple_cache).
+    application:ensure_all_started(simple_cache).
 
 cleanup(_SetupResult) ->
-    application:stop(simple_cache).
+    ok = application:stop(simple_cache).
 
 %% ============================================================
 %% Tests
