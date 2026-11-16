@@ -87,6 +87,26 @@ Compile the application with:
 rebar3 compile
 ```
 
+## Release
+
+Build the configured Relx release with:
+
+```bash
+rebar3 release
+```
+
+The release is created in `_build/default/rel/simple_cache`. Start or stop it
+with the generated script:
+
+```bash
+_build/default/rel/simple_cache/bin/simple_cache start
+_build/default/rel/simple_cache/bin/simple_cache stop
+```
+
+The release includes an extended start script but not the Erlang runtime, so
+Erlang/OTP must be installed on the target machine. Before starting it, update
+`config/sys.config` with the reachable nodes for the deployment.
+
 ## Test
 
 Run the test suite with:
@@ -106,8 +126,7 @@ Format the Erlang source code with:
 rebar3 format
 ```
 
-This command uses the project's configured `rebar3_format` plugin, which is
-deprecated.
+This command uses the `rebar3_format` plugin configured in `rebar.config`.
 
 ## Shell
 
