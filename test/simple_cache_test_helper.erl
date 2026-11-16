@@ -1,19 +1,17 @@
 -module(simple_cache_test_helper).
 
--export([setup_cluster/0, cleanup_cluster/1,
-         start_storage/0, start_cache/0, start_supervisor/0,
-         stop_started_apps/1, stop_cache/1, stop_supervisor/1,
-         start_discovery_mock/0, stop_discovery_mock/1,
-         discovery_requests/0]).
+-export([setup_cluster/0, cleanup_cluster/1, start_storage/0, start_cache/0,
+         start_supervisor/0, stop_started_apps/1, stop_cache/1, stop_supervisor/1,
+         start_discovery_mock/0, stop_discovery_mock/1, discovery_requests/0]).
 
 setup_cluster() ->
     ok = ensure_test_node(),
-    
+
     PreviousWaitTime = application:get_env(simple_cache, cluster_connection_wait_time),
     PreviousContractNodes = application:get_env(simple_cache, contract_nodes),
-    
+
     ok = application:set_env(simple_cache, cluster_connection_wait_time, 0),
-    
+
     {PreviousWaitTime, PreviousContractNodes}.
 
 cleanup_cluster({PreviousWaitTime, PreviousContractNodes}) ->
@@ -22,12 +20,12 @@ cleanup_cluster({PreviousWaitTime, PreviousContractNodes}) ->
 
 start_storage() ->
     ok = ensure_test_node(),
-    
+
     {ok, DiscoveryApps} = application:ensure_all_started(resource_discovery),
     {ok, MnesiaApps} = application:ensure_all_started(mnesia),
-    
+
     ok = simple_cache_store:initialize(),
-    
+
     DiscoveryApps ++ MnesiaApps.
 
 start_cache() ->
@@ -41,8 +39,7 @@ start_supervisor() ->
     Supervisor.
 
 stop_started_apps(StartedApps) ->
-    lists:foreach(fun(App) -> ok = application:stop(App) end,
-                  lists:reverse(StartedApps)).
+    lists:foreach(fun(App) -> ok = application:stop(App) end, lists:reverse(StartedApps)).
 
 stop_cache({Supervisor, StartedApps}) ->
     ok = stop_supervisor(Supervisor),
